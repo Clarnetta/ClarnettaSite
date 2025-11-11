@@ -18,8 +18,8 @@ export const PostList = () => {
 				setList(response.data);
 				setError(null);
 			} catch (e) {
-				console.error('Ошибка при загрузке поста:', e);
-				setError('Пост не найден');
+				console.error('Ошибка при загрузке публикаций:', e);
+				setError('Публикации не найдены');
 			} finally {
 				setLoading(false);
 			}
