@@ -18,8 +18,8 @@ export const PostList = () => {
 				setList(response.data);
 				setError(null);
 			} catch (e) {
-				console.error('Ошибка при загрузке публикаций:', e);
-				setError('Публикации не найдены');
+				console.error('Ошибка при загрузке поста:', e);
+				setError('Пост не найден');
 			} finally {
 				setLoading(false);
 			}
@@ -28,14 +28,14 @@ export const PostList = () => {
 		fetchList();
 	}, [])
 
-	if (loading) return <div className="message">Загрузка списка публикаций...</div>
+	if (loading) return <div className="message">Список публикаций загружается...</div>
 	if (error) return <div className="message">{error}</div>
 	if (!list) return <div className="message">Публикации не найдены</div>
 
 	return (
 
 		<div id="container">
-			<h2 id="lastPub">Последнии публикации</h2>
+			<h2 id="lastPub">Последние публикации</h2>
 			{
 				list.map(post => (
 					<div key={post.id} className="list">

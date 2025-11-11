@@ -1,3 +1,30 @@
+/* Стили для кнопки создания поста */
+.mainContent > button {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 2rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mainContent > button:hover {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 204, 255, 0.3);
+}
+
+.mainContent > button:active {
+  transform: translateY(0);
+}
+
 /* Стили для Home компонента */
 #generalDiv {
   width: 100%;
@@ -20,7 +47,7 @@
   pointer-events: none;
 }
 
-.content {
+.mainContent {
   position: relative;
   z-index: 1;
   max-width: 800px;

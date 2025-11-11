@@ -9,9 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
-    public function getAuthorNameAttribute()
+    public function getAuthorNameAttribute($value)
     {
-        return $this->user?->name ?? 'Unknown Author';
+        return $value ?: 'Unknown Author';
     }
 
     protected $fillable = ['title', 'content', 'author_name',];

@@ -20,7 +20,27 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Валидация данных
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'author_name' => 'nullable|string|max:255',
+            'content' => 'required|string',
+        ]);
+
+        try {
+            $post = Post::create($validatedData);
+            
+            return response()->json([
+                'message' => 'Пост успешно создан',
+                'post' => $post
+            ], 201);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Ошибка при создании поста',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

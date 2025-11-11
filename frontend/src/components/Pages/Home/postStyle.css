@@ -1,0 +1,248 @@
+/* Стили для окна создания поста */
+.divPost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.formPost {
+  background: rgba(30, 32, 40, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  animation: formSlideIn 0.4s ease-out;
+}
+
+.h2Post h2 {
+  font-size: 2em;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+}
+
+.inputPost {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  transition: var(--transition);
+  margin-bottom: 1.5rem;
+}
+
+.inputPost:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(102, 204, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.inputPost::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.textPost {
+  width: 100%;
+  min-height: 200px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: var(--transition);
+  margin-bottom: 1.5rem;
+  resize: vertical;
+}
+
+.textPost:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(102, 204, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.textPost::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.submitPost {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 1rem;
+}
+
+.submitPost:hover {
+  background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-color) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 204, 255, 0.3);
+}
+
+.submitPost:active {
+  transform: translateY(0);
+}
+
+/* Сообщения об ошибках */
+.formPost div[style*="color: red"] {
+  color: #ff4757 !important;
+  font-size: 0.9em;
+  margin-bottom: 1rem;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(255, 71, 87, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .divPost {
+    padding: 1rem;
+  }
+  
+  .formPost {
+    padding: 2rem 1.5rem;
+  }
+  
+  .h2Post h2 {
+    font-size: 1.7em;
+  }
+}
+
+@media (max-width: 480px) {
+  .formPost {
+    padding: 1.5rem 1rem;
+  }
+  
+  .inputPost,
+  .textPost {
+    padding: 0.875rem 1rem;
+  }
+  
+  .submitPost {
+    padding: 0.875rem 1.5rem;
+  }
+  
+  .mainContent > button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1em;
+  }
+}
+
+/* Light theme */
+@media (prefers-color-scheme: light) {
+  .divPost {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  
+  .formPost {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
+  
+  .inputPost,
+  .textPost {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+  }
+  
+  .inputPost:focus,
+  .textPost:focus {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color);
+  }
+  
+  .formPost div[style*="color: red"] {
+    background: rgba(255, 71, 87, 0.1);
+    border: 1px solid rgba(255, 71, 87, 0.3);
+  }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    color: #000;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancel-button:hover {
+    background-color: #5a6268;
+}

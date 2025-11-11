@@ -16,9 +16,9 @@ export const Header = () => {
           <li>
             <Link to="/">Домашняя</Link>
           </li>
-          <li>
+{/*          <li>
             <Link to="/contacts">Контакты</Link>
-          </li>
+          </li>*/}
           <li id="user">
             {isAuthenticated ? (
               <div>
