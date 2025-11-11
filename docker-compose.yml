@@ -1,40 +1,41 @@
-backend:
-  build:
-    context: ./backend
-    dockerfile: Dockerfile
-  volumes:
-    - sqlite_data:/var/lib/sqlite
-  ports:
-    - "8000:80"
-  environment:
-    - DB_CONNECTION=sqlite
-    - DB_DATABASE=/var/lib/sqlite/database.sqlite
-  command: >
-    sh -c "
-      # Создаем базу данных если её нет
-      if [ ! -f /var/lib/sqlite/database.sqlite ]; then
-        mkdir -p /var/lib/sqlite &&
-        touch /var/lib/sqlite/database.sqlite &&
-        chmod 666 /var/lib/sqlite/database.sqlite
-      fi &&
-      # Устанавливаем права (теперь папки должны существовать)
-      chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/lib/sqlite &&
-      chmod -R 775 /var/www/storage /var/www/bootstrap/cache &&
-      # Запускаем миграции
-      php artisan migrate --force &&
-      # Запускаем сервер
-      nginx && php-fpm
-    "
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - sqlite_data:/var/lib/sqlite
+    ports:
+      - "8000:80"
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/lib/sqlite/database.sqlite
+    command: >
+      sh -c "
+        # Создаем базу данных если её нет
+        if [ ! -f /var/lib/sqlite/database.sqlite ]; then
+          mkdir -p /var/lib/sqlite &&
+          touch /var/lib/sqlite/database.sqlite &&
+          chmod 666 /var/lib/sqlite/database.sqlite
+        fi &&
+        # Устанавливаем права
+        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/lib/sqlite &&
+        chmod -R 775 /var/www/storage /var/www/bootstrap/cache &&
+        # Запускаем миграции
+        php artisan migrate --force &&
+        # Запускаем сервер
+        nginx && php-fpm
+      "
 
-frontend:
-  build:
-    context: ./frontend
-    dockerfile: Dockerfile
-  ports:
-    - "3000:5173"  # меняем на 5173 внутренний порт
-  environment:
-    - VITE_API_URL=http://localhost:8000/api
-  command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
 
 volumes:
   sqlite_data:
