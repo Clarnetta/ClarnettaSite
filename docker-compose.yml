@@ -4,8 +4,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./backend/clarnetta-app:/var/www
       - sqlite_data:/var/lib/sqlite
+      # УБЕРИТЕ эту строку: - ./backend/clarnetta-app:/var/www
     ports:
       - "8000:80"
     environment:
@@ -13,27 +13,16 @@ services:
       - DB_DATABASE=/var/lib/sqlite/database.sqlite
     command: >
       sh -c "
-        # Создаем необходимые папки если их нет
-        mkdir -p /var/www/storage/framework/cache/data \
-                 /var/www/storage/framework/sessions \
-                 /var/www/storage/framework/views \
-                 /var/www/storage/logs \
-                 /var/www/bootstrap/cache \
-                 /var/lib/sqlite
-        
         # Создаем базу данных если её нет
         if [ ! -f /var/lib/sqlite/database.sqlite ]; then
-          touch /var/lib/sqlite/database.sqlite
-        fi
-        
+          mkdir -p /var/lib/sqlite &&
+          touch /var/lib/sqlite/database.sqlite &&
+          chmod 666 /var/lib/sqlite/database.sqlite
+        fi &&
         # Устанавливаем права
-        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/lib/sqlite
-        chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-        chmod 666 /var/lib/sqlite/database.sqlite
-        
+        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/lib/sqlite &&
         # Запускаем миграции
-        cd /var/www && php artisan migrate --force
-        
+        php artisan migrate --force &&
         # Запускаем сервер
         nginx && php-fpm
       "

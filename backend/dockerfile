@@ -20,14 +20,25 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Копируем все файлы проекта
+# Копируем ВСЕ файлы бэкенда
 COPY clarnetta-app/ .
 
 # Копируем конфигурацию nginx
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 
 # Устанавливаем зависимости
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+RUN composer install --no-dev --optimize-autoloader
+
+# Создаем необходимые папки
+RUN mkdir -p storage/framework/cache/data \
+             storage/framework/sessions \
+             storage/framework/views \
+             storage/logs \
+             bootstrap/cache
+
+# Устанавливаем правильные права
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 
