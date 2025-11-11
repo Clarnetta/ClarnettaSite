@@ -20,15 +20,19 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-COPY docker/nginx.conf /etc/nginx/sites-available/default
-
-# Добавьте эти строки для установки зависимостей
+# Сначала копируем только composer файлы
 COPY clarnetta-app/composer.json clarnetta-app/composer.lock* ./
+
+# Устанавливаем зависимости
 RUN composer install --no-dev --optimize-autoloader
 
+# Копируем остальные файлы приложения
 COPY clarnetta-app/ .
 
-# Установите правильные права
+# Копируем конфигурацию nginx
+COPY docker/nginx.conf /etc/nginx/sites-available/default
+
+# Устанавливаем правильные права
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 EXPOSE 80
