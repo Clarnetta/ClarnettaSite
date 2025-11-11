@@ -2,7 +2,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./backend/clarnetta-app:/var/www
       - sqlite_data:/var/lib/sqlite
@@ -13,16 +13,15 @@ services:
       - DB_DATABASE=/var/lib/sqlite/database.sqlite
     command: >
       sh -c "
-        # Создаем базу данных если её нет
+        # Создаем базу данных если её нет (внутри контейнера)
         if [ ! -f /var/lib/sqlite/database.sqlite ]; then
           mkdir -p /var/lib/sqlite &&
           touch /var/lib/sqlite/database.sqlite &&
-          chmod 666 /var/lib/sqlite/database.sqlite
+          chmod 666 /var/lib/sqlite/database.sqlite &&
+          chown -R www-data:www-data /var/lib/sqlite
         fi &&
         # Устанавливаем права
-        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/lib/sqlite &&
-        # Запускаем миграции
-        cd /var/www && php artisan migrate --force &&
+        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database /var/lib/sqlite &&
         # Запускаем сервер
         nginx && php-fpm
       "
@@ -30,7 +29,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     volumes:
       - ./frontend:/app
       - /app/node_modules
