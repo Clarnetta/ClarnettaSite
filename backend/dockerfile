@@ -16,6 +16,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_sqlite pdo_mysql mbstring exif pcntl bcmath gd
 
+# Устанавливаем Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
@@ -23,11 +24,22 @@ WORKDIR /var/www
 # Копируем все файлы проекта
 COPY clarnetta-app/ .
 
-# Копируем конфигурацию nginx
-COPY docker/nginx.conf /etc/nginx/sites-available/default
+# Создаем необходимые папки
+RUN mkdir -p storage/framework/cache/data \
+             storage/framework/sessions \
+             storage/framework/views \
+             storage/logs \
+             bootstrap/cache
 
 # Устанавливаем зависимости
 RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Копируем конфигурацию nginx
+COPY docker/nginx.conf /etc/nginx/sites-available/default
+
+# Устанавливаем права
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
 
 EXPOSE 80
 
