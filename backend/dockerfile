@@ -23,7 +23,7 @@ WORKDIR /var/www
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 
 # Добавьте эти строки для установки зависимостей
-COPY clarnetta-app/composer.json ./
+COPY clarnetta-app/composer.json clarnetta-app/composer.lock* ./
 RUN composer install --no-dev --optimize-autoloader
 
 COPY clarnetta-app/ .
