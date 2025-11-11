@@ -1,0 +1,128 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  background: rgba(43, 45, 51, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navigate {
+  width: 100%;
+}
+
+.navigate_ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navigate_ul li {
+  list-style: none;
+}
+
+.navigate_ul a {
+  font-weight: 500;
+  color: #e0e0e0;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navigate_ul a:hover {
+  color: #66ccff;
+  background: rgba(102, 204, 255, 0.1);
+}
+
+.navigate_ul a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #66ccff;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navigate_ul a:hover::after {
+  width: 80%;
+}
+
+#user {
+  margin-left: auto;
+}
+
+#user > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#user a {
+  color: #66ccff;
+  font-weight: 600;
+}
+
+#user button {
+  border-radius: 8px;
+  border: 1px solid rgba(102, 204, 255, 0.3);
+  padding: 0.5rem 1rem;
+  font-size: 0.9em;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#user button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #66ccff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 204, 255, 0.2);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 0.8rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header {
+    padding: 0.6rem 3rem;
+  }
+  
+  .navigate_ul {
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .navigate_ul {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #user > div {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

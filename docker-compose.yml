@@ -1,0 +1,42 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend/clarnetta-app:/var/www
+      - sqlite_data:/var/lib/sqlite
+    ports:
+      - "8000:80"
+    environment:
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/lib/sqlite/database.sqlite
+    command: >
+      sh -c "
+        # Создаем базу данных если её нет (внутри контейнера)
+        if [ ! -f /var/lib/sqlite/database.sqlite ]; then
+          mkdir -p /var/lib/sqlite &&
+          touch /var/lib/sqlite/database.sqlite &&
+          chmod 666 /var/lib/sqlite/database.sqlite &&
+          chown -R www-data:www-data /var/lib/sqlite
+        fi &&
+        # Устанавливаем права
+        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database /var/lib/sqlite &&
+        # Запускаем сервер
+        nginx && php-fpm
+      "
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+
+volumes:
+  sqlite_data:
